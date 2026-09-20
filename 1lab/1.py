@@ -71,17 +71,6 @@ def quantize(signal, bits):
     signal_quant=np.clip(signal_quant, 0, levels)
     return signal_quant
 
-#ошибка при квантовании
-F_orig=np.fft.fft(signal)
-
-for bits in [3, 4, 5, 6]:
-    y_quant=quantize(signal, bits)
-    F_quant=np.fft.fft(y_quant)
-    levels=2**bits-1
-    signal_norm=((signal-signal.min())/(signal.max()-signal.min())*levels)
-    error=np.mean(np.abs(y_quant-signal_norm))
-    print(f'{bits} бит: 'f'средняя ошибка квантования = {error:.4f}')
-
 
 #----------Тестовый сигнал со случайным SR для плавности
 f=20 #максимальная частота
@@ -122,6 +111,32 @@ for i in range(fs4):
     t4.append(i*(1/fs4))
 t4=np.array(t4)
 y4=7*np.cos(2*np.pi*f*t4+(np.pi/3))
+
+#ошибка при квантовании
+sig = y4.astype(float)
+F_orig = np.fft.fft(sig)
+N_sig = len(sig)
+freqs = np.arange(N_sig//2) * (fs4) / N_sig
+mag_orig = np.abs(F_orig[:N_sig//2])
+
+plt.figure(figsize=(14, 10))
+plt.subplot(3, 2, 1)
+plt.plot(freqs, mag_orig)
+plt.title('Спектр исходного сигнала (без квантования)')
+plt.grid(True)
+
+for i, bits in enumerate([3, 4, 5, 6]):
+    y_q = quantize(sig, bits)
+    F_q = np.fft.fft(y_q)
+    mag_q = np.abs(F_q[:N_sig // 2])
+    levels=2**bits-1
+    signal_norm=((sig-sig.min())/(sig.max()-sig.min())*levels)
+    error=np.mean(np.abs(y_q-signal_norm))
+    print(f'{bits} бит: 'f'средняя ошибка квантования = {error:.4f}')
+    plt.subplot(3, 2, i + 2)
+    plt.plot(freqs, mag_q)
+    plt.title(f'Спектр после квантования {bits} бит')
+    plt.grid(True)
 
 N4=len(y4)
 F4=[]
@@ -179,7 +194,7 @@ plt.xlabel('Частота')
 plt.subplot(2,1,2)
 plt.title('Спектр прореженного')
 plt.plot(freqs_new, mag_new)
-plt.xlabel('Время, с')
+plt.xlabel('Частота')
 plt.ylabel('Амплитуда')
 
 
