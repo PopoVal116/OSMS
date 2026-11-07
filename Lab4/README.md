@@ -13,9 +13,9 @@
 
 ## Структура проекта
 
-- `src/gold.c` — реализация генератора на C
-- `src/OSMS_Lab4.m` — скрипт Matlab
-- `report/0_main.pdf` — отчёт
+- `src/gold.c` - реализация генератора на C
+- `src/OSMS_Lab4.m` - скрипт Matlab
+- `report/0_main.pdf` - отчёт
 
 ## Запуск C-программы
 ```bash
