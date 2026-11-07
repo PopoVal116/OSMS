@@ -71,27 +71,27 @@ int main()
 
     for (t = 0; t < N; t++)
     {
-        int outX = X[4];
-        int outY = Y[4];
+        int outX = X2[4];
+        int outY = Y2[4];
         Gold2[t] = outX ^ outY;
 
         printf("%4d | ", t);
         for (i = 0; i < 5; i++)
-            printf("%d ", X[i]);
+            printf("%d ", X2[i]);
         printf("|  %d  | ", outX);
         for (i = 0; i < 5; i++)
-            printf("%d ", Y[i]);
+            printf("%d ", Y2[i]);
         printf("|  %d  |  %d\n", outY, Gold2[t]);
 
-        int newX = X[3] ^ X[4];
-        int newY = Y[1] ^ Y[4];
+        int newX = X2[3] ^ X2[4];
+        int newY = Y2[1] ^ Y2[4];
 
         for (i = 4; i > 0; i--)
-            X[i] = X[i - 1];
-        X[0] = newX;
+            X2[i] = X2[i - 1];
+        X2[0] = newX;
         for (i = 4; i > 0; i--)
-            Y[i] = Y[i - 1];
-        Y[0] = newY;
+            Y2[i] = Y2[i - 1];
+        Y2[0] = newY;
     }
     printf("Вторая последовательность Голда:\n");
     for (i = 0; i < N; i++)
